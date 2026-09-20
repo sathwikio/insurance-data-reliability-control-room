@@ -12,7 +12,7 @@ export default function QueueTable() {
             <th>Decision</th>
             <th>Confidence</th>
             <th>Status</th>
-            <th>Freshness severity</th>
+            <th>Freshness Severity</th>
           </tr>
         </thead>
         <tbody>
@@ -20,9 +20,7 @@ export default function QueueTable() {
             <tr key={`${r.pipeline_name}-${i}`}>
               <td>{r.pipeline_name}</td>
               <td>{r.domain}</td>
-              <td>
-                <span className={`badge ${r.jev_decision}`}>{r.jev_decision}</span>
-              </td>
+              <td>{r.jev_decision}</td>
               <td>{r.jev_confidence === null ? "n/a" : r.jev_confidence.toFixed(2)}</td>
               <td>{r.status}</td>
               <td>{r.freshness_severity}</td>

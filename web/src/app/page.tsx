@@ -36,14 +36,17 @@ export default function Page() {
         <FreshnessBars />
       </section>
 
-      <section aria-label="Pipeline health table">
-        <h2>Pipeline Health Table</h2>
-        <HealthTable />
-      </section>
-
-      <section aria-label="Investigation queue">
-        <h2>Investigation Queue</h2>
-        <QueueTable />
+      <section aria-label="Pipeline health and investigation queue">
+        <div className="grid-tables">
+          <div>
+            <h2>Pipeline Health Table</h2>
+            <HealthTable />
+          </div>
+          <div>
+            <h2>Investigation Queue</h2>
+            <QueueTable />
+          </div>
+        </div>
       </section>
 
       <footer>

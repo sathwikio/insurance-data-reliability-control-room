@@ -21,9 +21,13 @@ export default function DomainBars() {
         <BarChart data={data} margin={{ top: 4, right: 4, bottom: 0, left: -16 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#e3e6ea" />
           <XAxis dataKey="domain" fontSize={11} interval={0} angle={-18} dy={8} height={52} />
-          <YAxis fontSize={11} allowDecimals={false} />
+          <YAxis
+            fontSize={11}
+            allowDecimals={false}
+            label={{ value: "Total Runs", angle: -90, position: "insideLeft", fontSize: 11 }}
+          />
           <Tooltip />
-          <Legend wrapperStyle={{ fontSize: 11 }} />
+          <Legend layout="vertical" align="right" verticalAlign="middle" wrapperStyle={{ fontSize: 12 }} />
           {DECISIONS.map((d) => (
             <Bar key={d} dataKey={d} stackId="decisions" fill={DECISION_COLORS[d]} />
           ))}

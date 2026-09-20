@@ -1,6 +1,6 @@
 "use client";
 
-import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
+import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 import { DECISIONS, DECISION_COLORS, kpis } from "@/lib/stats";
 
 export default function DecisionDonut() {
@@ -17,6 +17,7 @@ export default function DecisionDonut() {
             ))}
           </Pie>
           <Tooltip formatter={(value, name) => `${name}: ${value} runs`} />
+          <Legend layout="vertical" align="right" verticalAlign="middle" wrapperStyle={{ fontSize: 12 }} />
         </PieChart>
       </ResponsiveContainer>
     </div>

@@ -7,14 +7,14 @@ export default function HealthTable() {
       <table>
         <thead>
           <tr>
-            <th>Pipeline</th>
-            <th>Domain</th>
-            <th>Total runs</th>
-            <th>Healthy %</th>
-            <th>Attention</th>
-            <th>Blocked</th>
-            <th>Avg freshness delay</th>
-            <th>Avg failure rate</th>
+            <th>pipeline_name</th>
+            <th>domain</th>
+            <th>total_runs</th>
+            <th>healthy_pct</th>
+            <th>attention_runs</th>
+            <th>blocked_runs</th>
+            <th>avg_freshness_delay</th>
+            <th>avg_failure_rate</th>
           </tr>
         </thead>
         <tbody>

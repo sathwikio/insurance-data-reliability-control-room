@@ -28,6 +28,25 @@ export const DECISION_COLORS: Record<Decision, string> = {
 
 const ATTENTION: Decision[] = ["WATCH", "INVESTIGATE"];
 
+/**
+ * Row order of the published Databricks dashboard: pipelines grouped by
+ * domain with the ingest/load pipeline before the transform pipeline.
+ * Values are still computed from the dataset; only the presentation order
+ * is fixed so the web dashboard matches Databricks row for row.
+ */
+export const PIPELINE_ORDER = [
+  "auto_claims_raw_ingest",
+  "auto_claims_dedupe_transform",
+  "home_claims_raw_ingest",
+  "home_claims_enrich_transform",
+  "policies_snapshot_load",
+  "policies_scd2_transform",
+  "billing_payments_ingest",
+  "billing_reconciliation_transform",
+  "customers_master_load",
+  "customers_match_transform",
+];
+
 export interface Kpis {
   total: number;
   healthyPct: number;
@@ -79,11 +98,13 @@ export interface FreshnessRow {
 
 export function avgFreshnessByPipeline(runs: Run[] = RUNS): FreshnessRow[] {
   const names = [...new Set(runs.map((r) => r.pipeline_name))].sort();
-  return names.map((pipeline_name) => {
-    const group = runs.filter((r) => r.pipeline_name === pipeline_name);
-    const avg = group.reduce((s, r) => s + r.freshness_delay_minutes, 0) / group.length;
-    return { pipeline_name, avg_freshness_delay: Math.round(avg * 100) / 100 };
-  });
+  return names
+    .map((pipeline_name) => {
+      const group = runs.filter((r) => r.pipeline_name === pipeline_name);
+      const avg = group.reduce((s, r) => s + r.freshness_delay_minutes, 0) / group.length;
+      return { pipeline_name, avg_freshness_delay: Math.round(avg * 100) / 100 };
+    })
+    .sort((a, b) => b.avg_freshness_delay - a.avg_freshness_delay);
 }
 
 export interface HealthRow {
@@ -98,7 +119,9 @@ export interface HealthRow {
 }
 
 export function healthTable(runs: Run[] = RUNS): HealthRow[] {
-  const names = [...new Set(runs.map((r) => r.pipeline_name))].sort();
+  const names = PIPELINE_ORDER.filter((name) =>
+    runs.some((r) => r.pipeline_name === name),
+  );
   return names.map((pipeline_name) => {
     const group = runs.filter((r) => r.pipeline_name === pipeline_name);
     const n = group.length;
@@ -128,6 +151,7 @@ export interface QueueRow {
 }
 
 export function investigationQueue(runs: Run[] = RUNS): QueueRow[] {
+  const order = new Map(PIPELINE_ORDER.map((name, i) => [name, i]));
   return runs
     .filter((r) => r.jev_decision === "INVESTIGATE" || r.jev_decision === "BLOCK")
     .map((r) => ({
@@ -137,6 +161,12 @@ export function investigationQueue(runs: Run[] = RUNS): QueueRow[] {
       jev_confidence: r.jev_confidence,
       status: r.status,
       freshness_severity: r.freshness_severity,
+      run_timestamp: r.run_timestamp,
     }))
-    .sort((a, b) => (a.jev_confidence ?? 0) - (b.jev_confidence ?? 0));
+    .sort(
+      (a, b) =>
+        (order.get(a.pipeline_name) ?? 0) - (order.get(b.pipeline_name) ?? 0) ||
+        a.run_timestamp.localeCompare(b.run_timestamp),
+    )
+    .map(({ run_timestamp: _dropped, ...row }) => row);
 }
