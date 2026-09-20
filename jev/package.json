@@ -1,0 +1,14 @@
+{
+  "name": "jev-decision-layer",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Isolated Jev decision layer: bounded choice questions over data/jev_input.json via the Vercel AI SDK.",
+  "scripts": {
+    "evaluate": "node evaluate.mjs"
+  },
+  "dependencies": {
+    "ai": "^7.0.0",
+    "@ai-sdk/gateway": "^4.0.0"
+  }
+}
