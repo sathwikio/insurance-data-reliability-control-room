@@ -170,6 +170,12 @@ To reproduce: create a Free Edition workspace, upload
 `/Volumes/<catalog>/default/insurance`, import the notebook, set the volume
 path at the top, and run all cells.
 
+### Dashboard evidence
+
+The native Databricks AI/BI dashboard was tested and published. A PDF export
+of the published dashboard is in the repository:
+`docs/screenshots/databricks-dashboard.pdf`.
+
 ## Microsoft Fabric
 
 Fabric support is implemented but was not tested in a live Fabric workspace.
