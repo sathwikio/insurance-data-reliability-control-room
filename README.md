@@ -172,9 +172,11 @@ path at the top, and run all cells.
 
 ### Dashboard evidence
 
-The native Databricks AI/BI dashboard was tested and published. A PDF export
-of the published dashboard is in the repository:
-`docs/screenshots/databricks-dashboard.pdf`.
+The native Databricks AI/BI dashboard was tested and published.
+
+![Databricks Insurance Data Reliability Control Room](docs/screenshots/databricks-dashboard.png)
+
+[View the PDF export](docs/screenshots/databricks-dashboard.pdf)
 
 ## Microsoft Fabric
 
