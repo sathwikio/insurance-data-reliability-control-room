@@ -1,10 +1,9 @@
-.env
-.env.*
-!.env.example
 .venv/
 __pycache__/
+*.pyc
 .pytest_cache/
-.DS_Store
+data/delta/
+spark-warehouse/
 node_modules/
-dist/
-.streamlit/
+package-lock.json
+.DS_Store

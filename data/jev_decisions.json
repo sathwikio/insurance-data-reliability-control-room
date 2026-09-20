@@ -1,0 +1,202 @@
+[
+  {
+    "run_id": "auto_claims_dedupe_transform_20260918_0",
+    "decision": "HEALTHY",
+    "confidence": 0.96
+  },
+  {
+    "run_id": "auto_claims_dedupe_transform_20260918_1",
+    "decision": "INVESTIGATE",
+    "confidence": 0.95
+  },
+  {
+    "run_id": "auto_claims_dedupe_transform_20260919_2",
+    "decision": "WATCH",
+    "confidence": 0.58
+  },
+  {
+    "run_id": "auto_claims_dedupe_transform_20260919_3",
+    "decision": "BLOCK",
+    "confidence": 1
+  },
+  {
+    "run_id": "auto_claims_raw_ingest_20260918_0",
+    "decision": "INVESTIGATE",
+    "confidence": 0.97
+  },
+  {
+    "run_id": "auto_claims_raw_ingest_20260918_1",
+    "decision": "HEALTHY",
+    "confidence": 0.97
+  },
+  {
+    "run_id": "auto_claims_raw_ingest_20260919_2",
+    "decision": "INVESTIGATE",
+    "confidence": 0.96
+  },
+  {
+    "run_id": "auto_claims_raw_ingest_20260919_3",
+    "decision": "HEALTHY",
+    "confidence": 0.95
+  },
+  {
+    "run_id": "billing_payments_ingest_20260918_0",
+    "decision": "BLOCK",
+    "confidence": 0.99
+  },
+  {
+    "run_id": "billing_payments_ingest_20260918_1",
+    "decision": "HEALTHY",
+    "confidence": 0.98
+  },
+  {
+    "run_id": "billing_payments_ingest_20260919_2",
+    "decision": "HEALTHY",
+    "confidence": 0.99
+  },
+  {
+    "run_id": "billing_payments_ingest_20260919_3",
+    "decision": "INVESTIGATE",
+    "confidence": 0.94
+  },
+  {
+    "run_id": "billing_reconciliation_transform_20260918_0",
+    "decision": "HEALTHY",
+    "confidence": 0.93
+  },
+  {
+    "run_id": "billing_reconciliation_transform_20260918_1",
+    "decision": "BLOCK",
+    "confidence": 1
+  },
+  {
+    "run_id": "billing_reconciliation_transform_20260919_2",
+    "decision": "HEALTHY",
+    "confidence": 0.93
+  },
+  {
+    "run_id": "billing_reconciliation_transform_20260919_3",
+    "decision": "HEALTHY",
+    "confidence": 0.95
+  },
+  {
+    "run_id": "customers_master_load_20260918_0",
+    "decision": "HEALTHY",
+    "confidence": 0.96
+  },
+  {
+    "run_id": "customers_master_load_20260918_1",
+    "decision": "BLOCK",
+    "confidence": 1
+  },
+  {
+    "run_id": "customers_master_load_20260919_2",
+    "decision": "HEALTHY",
+    "confidence": 0.9400000000000001
+  },
+  {
+    "run_id": "customers_master_load_20260919_3",
+    "decision": "HEALTHY",
+    "confidence": 0.96
+  },
+  {
+    "run_id": "customers_match_transform_20260918_0",
+    "decision": "HEALTHY",
+    "confidence": 0.98
+  },
+  {
+    "run_id": "customers_match_transform_20260918_1",
+    "decision": "HEALTHY",
+    "confidence": 0.92
+  },
+  {
+    "run_id": "customers_match_transform_20260919_2",
+    "decision": "HEALTHY",
+    "confidence": 0.96
+  },
+  {
+    "run_id": "customers_match_transform_20260919_3",
+    "decision": "INVESTIGATE",
+    "confidence": 0.96
+  },
+  {
+    "run_id": "home_claims_enrich_transform_20260918_0",
+    "decision": "BLOCK",
+    "confidence": 0.99
+  },
+  {
+    "run_id": "home_claims_enrich_transform_20260918_1",
+    "decision": "INVESTIGATE",
+    "confidence": 0.87
+  },
+  {
+    "run_id": "home_claims_enrich_transform_20260919_2",
+    "decision": "BLOCK",
+    "confidence": 0.99
+  },
+  {
+    "run_id": "home_claims_enrich_transform_20260919_3",
+    "decision": "HEALTHY",
+    "confidence": 0.99
+  },
+  {
+    "run_id": "home_claims_raw_ingest_20260918_0",
+    "decision": "HEALTHY",
+    "confidence": 0.98
+  },
+  {
+    "run_id": "home_claims_raw_ingest_20260918_1",
+    "decision": "HEALTHY",
+    "confidence": 0.95
+  },
+  {
+    "run_id": "home_claims_raw_ingest_20260919_2",
+    "decision": "WATCH",
+    "confidence": 0.68
+  },
+  {
+    "run_id": "home_claims_raw_ingest_20260919_3",
+    "decision": "HEALTHY",
+    "confidence": 0.98
+  },
+  {
+    "run_id": "policies_scd2_transform_20260918_0",
+    "decision": "HEALTHY",
+    "confidence": 0.93
+  },
+  {
+    "run_id": "policies_scd2_transform_20260918_1",
+    "decision": "HEALTHY",
+    "confidence": 0.95
+  },
+  {
+    "run_id": "policies_scd2_transform_20260919_2",
+    "decision": "INVESTIGATE",
+    "confidence": 0.95
+  },
+  {
+    "run_id": "policies_scd2_transform_20260919_3",
+    "decision": "BLOCK",
+    "confidence": 0.98
+  },
+  {
+    "run_id": "policies_snapshot_load_20260918_0",
+    "decision": "BLOCK",
+    "confidence": 0.99
+  },
+  {
+    "run_id": "policies_snapshot_load_20260918_1",
+    "decision": "HEALTHY",
+    "confidence": 0.94
+  },
+  {
+    "run_id": "policies_snapshot_load_20260919_2",
+    "decision": "HEALTHY",
+    "confidence": 0.93
+  },
+  {
+    "run_id": "policies_snapshot_load_20260919_3",
+    "decision": "HEALTHY",
+    "confidence": 0.96
+  }
+]
