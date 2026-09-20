@@ -1,10 +1,14 @@
 # Databricks notebook source
+# /// script
+# [tool.databricks.environment]
+# environment_version = "5"
+# ///
 # Insurance Data Reliability Control Room — deterministic pipeline + Jev decision join.
 #
 # Environment: Databricks Free Edition (Serverless, Unity Catalog), any recent DBR.
 # Upload the two project files before running:
-#   data/pipeline_runs.csv    ->  /Volumes/<your-volume>/insurance/pipeline_runs.csv
-#   data/jev_decisions.json   ->  /Volumes/<your-volume>/insurance/jev_decisions.json
+#   data/pipeline_runs.csv    ->  /Volumes/<catalog>/default/insurance/pipeline_runs.csv
+#   data/jev_decisions.json   ->  /Volumes/<catalog>/default/insurance/jev_decisions.json
 # The metric functions below are a verbatim mirror of src/metrics.py so the
 # notebook produces the same numbers as the local pipeline.
 
@@ -15,9 +19,20 @@
 
 # COMMAND ----------
 
-VOLUME_PATH = "/Volumes/main/default/insurance"  # <-- edit to your volume path
+CATALOG = "<catalog>"  # <-- set to your workspace catalog
+SCHEMA = "default"
+VOLUME = "insurance"
+
+VOLUME_PATH = f"/Volumes/{CATALOG}/{SCHEMA}/{VOLUME}"
 SOURCE_CSV = f"{VOLUME_PATH}/pipeline_runs.csv"
 DECISIONS_JSON = f"{VOLUME_PATH}/jev_decisions.json"
+
+# COMMAND ----------
+
+# Idempotent setup: create the volume once and fix the session context.
+spark.sql(f"CREATE VOLUME IF NOT EXISTS {CATALOG}.{SCHEMA}.{VOLUME}")
+spark.sql(f"USE CATALOG {CATALOG}")
+spark.sql(f"USE SCHEMA {SCHEMA}")
 
 # COMMAND ----------
 
@@ -128,7 +143,7 @@ display(metrics_df)
 
 # COMMAND ----------
 
-metrics_df.write.format("delta").mode("overwrite").saveAsTable("main.default.pipeline_metrics")
+metrics_df.write.format("delta").mode("overwrite").saveAsTable(f"{CATALOG}.{SCHEMA}.pipeline_metrics")
 
 # COMMAND ----------
 
@@ -174,7 +189,7 @@ display(final_df)
 
 # COMMAND ----------
 
-final_df.write.format("delta").mode("overwrite").saveAsTable("main.default.pipeline_analytics")
+final_df.write.format("delta").mode("overwrite").saveAsTable(f"{CATALOG}.{SCHEMA}.pipeline_analytics")
 
 # COMMAND ----------
 
@@ -190,14 +205,14 @@ final_df.write.format("delta").mode("overwrite").saveAsTable("main.default.pipel
 # MAGIC   ROUND(AVG(CASE WHEN jev_decision = 'HEALTHY' THEN 1.0 ELSE 0.0 END), 4) AS healthy_share,
 # MAGIC   SUM(CASE WHEN jev_decision IN ('WATCH', 'INVESTIGATE') THEN 1 ELSE 0 END) AS requires_attention,
 # MAGIC   SUM(CASE WHEN jev_decision = 'BLOCK' THEN 1 ELSE 0 END) AS blocked_pipelines
-# MAGIC FROM main.default.pipeline_analytics;
+# MAGIC FROM pipeline_analytics;
 
 # COMMAND ----------
 
 # MAGIC %sql
 # MAGIC -- Decision distribution (bar chart)
 # MAGIC SELECT jev_decision, COUNT(*) AS runs
-# MAGIC FROM main.default.pipeline_analytics
+# MAGIC FROM pipeline_analytics
 # MAGIC GROUP BY jev_decision
 # MAGIC ORDER BY runs DESC;
 
@@ -206,7 +221,7 @@ final_df.write.format("delta").mode("overwrite").saveAsTable("main.default.pipel
 # MAGIC %sql
 # MAGIC -- Domain distribution (bar chart)
 # MAGIC SELECT domain, jev_decision, COUNT(*) AS runs
-# MAGIC FROM main.default.pipeline_analytics
+# MAGIC FROM pipeline_analytics
 # MAGIC GROUP BY domain, jev_decision
 # MAGIC ORDER BY domain, jev_decision;
 
@@ -215,7 +230,7 @@ final_df.write.format("delta").mode("overwrite").saveAsTable("main.default.pipel
 # MAGIC %sql
 # MAGIC -- Freshness trend (line chart over run timestamp)
 # MAGIC SELECT run_timestamp, freshness_delay_minutes, jev_decision
-# MAGIC FROM main.default.pipeline_analytics
+# MAGIC FROM pipeline_analytics
 # MAGIC ORDER BY run_timestamp;
 
 # COMMAND ----------
@@ -227,7 +242,7 @@ final_df.write.format("delta").mode("overwrite").saveAsTable("main.default.pipel
 # MAGIC   jev_decision, jev_confidence,
 # MAGIC   failure_rate, row_count_variance, duration_variance,
 # MAGIC   freshness_delay_minutes, freshness_severity, schema_drift
-# MAGIC FROM main.default.pipeline_analytics
+# MAGIC FROM pipeline_analytics
 # MAGIC ORDER BY run_timestamp DESC;
 
 # COMMAND ----------
@@ -236,7 +251,7 @@ final_df.write.format("delta").mode("overwrite").saveAsTable("main.default.pipel
 # MAGIC -- Severe runs detail (investigation queue)
 # MAGIC SELECT run_id, pipeline_name, failure_rate, row_count_variance,
 # MAGIC        freshness_severity, schema_drift, error_message, jev_decision, jev_confidence
-# MAGIC FROM main.default.pipeline_analytics
+# MAGIC FROM pipeline_analytics
 # MAGIC WHERE jev_decision IN ('INVESTIGATE', 'BLOCK')
 # MAGIC ORDER BY jev_confidence ASC;
 
@@ -245,7 +260,7 @@ final_df.write.format("delta").mode("overwrite").saveAsTable("main.default.pipel
 # MAGIC %md
 # MAGIC ## 9. Dashboard hook
 # MAGIC
-# MAGIC Build the Databricks dashboard against `main.default.pipeline_analytics`
+# MAGIC Build the Databricks dashboard against `pipeline_analytics`
 # MAGIC following `docs/dashboard-spec.md`: four KPI cards (query 1), decision
 # MAGIC distribution (query 2), domain distribution (query 3), freshness trend
 # MAGIC (query 4), and the pipeline health table (query 5).
