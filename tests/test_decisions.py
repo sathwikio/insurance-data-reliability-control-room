@@ -21,12 +21,21 @@ def load_csv(name):
         rows = []
         for raw in csv.DictReader(fh):
             row = dict(raw)
-            for key in ("expected_rows", "actual_rows", "failed_rows",
-                        "duration_seconds", "expected_duration_seconds",
-                        "freshness_delay_minutes"):
+            for key in (
+                "expected_rows",
+                "actual_rows",
+                "failed_rows",
+                "duration_seconds",
+                "expected_duration_seconds",
+                "freshness_delay_minutes",
+            ):
                 row[key] = int(row[key])
-            for key in ("failure_rate", "row_count_variance", "duration_variance",
-                        "jev_confidence"):
+            for key in (
+                "failure_rate",
+                "row_count_variance",
+                "duration_variance",
+                "jev_confidence",
+            ):
                 if row.get(key):
                     row[key] = float(row[key])
             rows.append(row)

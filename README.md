@@ -1,260 +1,132 @@
 # Insurance Data Reliability Control Room
 
-A small data engineering project for insurance pipeline reliability.
+![CI](https://github.com/sathwikio/insurance-data-reliability-control-room/actions/workflows/ci.yml/badge.svg)
+![Python 3.12](https://img.shields.io/badge/python-3.12-blue)
+![License: MIT](https://img.shields.io/badge/License-MIT-green)
 
-Python and PySpark calculate deterministic health metrics from synthetic pipeline runs. Jev maps each measured run state to one bounded operational label.
+Deterministic PySpark metrics + a bounded Jev decision layer over 40 synthetic insurance pipeline runs. Python computes facts; Jev assigns one of `HEALTHY / WATCH / INVESTIGATE / BLOCK`. The join is validated one-to-one on `run_id`.
 
-Databricks stores the final Delta table and presents it through a native AI/BI dashboard.
+All data is synthetic (seed 42). No customer data. No insurer connection.
 
-All data is synthetic. The project does not use customer data. It does not connect to any insurer system.
+## Quickstart (offline, no API key)
+
+Prerequisites: Python 3.12, Java 17, Node.js 22.
+
+```bash
+# macOS
+brew install openjdk@17
+export JAVA_HOME=/opt/homebrew/opt/openjdk@17
+# Linux: export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+```
+
+```bash
+python -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt && pip install -e ".[dev]"
+cp .env.example .env   # set AI_GATEWAY_API_KEY only for a fresh Jev run
+
+make e2e-no-key   # generate_data -> spark_pipeline -> build_final -> pytest
+make sync-web     # regenerate web/src/data/runs.json from final_analytics.csv
+cd web && npm ci && npm run build
+```
+
+Docker alternative:
+
+```bash
+docker build -t insurance-control-room:repro .
+docker run --rm insurance-control-room:repro python -m pytest tests/ -q
+```
 
 ## System design
 
-The project separates measurement from judgment.
-
-- **Deterministic layer:** Python and PySpark calculate reliability metrics from source fields.
-- **Decision layer:** Jev receives only the measured state and returns one allowed operational label.
-- **Analytics layer:** Delta tables keep the metrics, decision, and model confidence together.
-- **Presentation layer:** Databricks AI/BI presents the final table through SQL-backed visuals.
-
-Jev does not calculate pipeline metrics. The Python metric functions do not assign operational labels.
+- `src/metrics.py` computes all metrics (single source of truth).
+- `src/spark_pipeline.py` calls those functions via UDFs; adds no logic.
+- `jev/evaluate.mjs` receives measured state only; returns one label + native confidence.
+- `src/build_final.py` joins on `run_id` after coverage and label checks; fails otherwise.
 
 ```text
-Synthetic insurance pipeline runs
-        |
-        v
-Python / PySpark
-deterministic metrics
-        |
-        v
-Delta table: pipeline_metrics
-        |
-        +---- measured state ----> Jev
-        |                           |
-        |                           v
-        |                 HEALTHY / WATCH /
-        |                 INVESTIGATE / BLOCK
-        |                           |
-        +----------- join on run_id-+
-                    |
-                    v
-Delta table: pipeline_analytics
-                    |
-                    v
-Databricks AI/BI Dashboard
+data/pipeline_runs.csv (seed 42)
+  -> src/spark_pipeline.py
+    -> data/delta/pipeline_metrics + data/jev_input.json
+  -> jev/evaluate.mjs
+    -> data/jev_decisions.json
+  -> src/build_final.py (validate, join on run_id)
+    -> data/delta/pipeline_analytics + data/final_analytics.csv
+  -> notebooks/databricks_pipeline.py -> Delta + AI/BI dashboard
+  -> web/ (Next.js static mirror of final_analytics.csv)
 ```
 
 ## Data and results
 
-The fixed data seed creates 40 pipeline runs across five insurance domains.
+Seed 42 produces 40 runs: 8 each in `auto_claims`, `home_claims`, `policies`, `billing`, `customers`, across 2026-09-18/19.
 
-| Domain | Runs |
-|---|---:|
-| Auto claims | 8 |
-| Home claims | 8 |
-| Policies | 8 |
-| Billing | 8 |
-| Customers | 8 |
+Per-run signals: `failure_rate`, `row_count_variance`, `duration_variance`, `freshness_severity` (`ON_TIME` ≤15, `MINOR` ≤60, `MAJOR` ≤240, else `SEVERE`), `schema_drift_present`, `error_present`.
 
-The deterministic layer calculates these signals for every run:
+Checked-in decision distribution: 23 `HEALTHY`, 2 `WATCH`, 7 `INVESTIGATE`, 8 `BLOCK` (40/40 coverage).
 
-- failure rate
-- row count variance
-- duration variance
-- freshness severity
-- schema drift state
-- error presence
+## Reproduction
 
-Jev returns one label for each run.
+Local offline uses the checked-in `data/jev_decisions.json` — no key needed. For a fresh Jev run:
 
-| Label | Meaning |
-|---|---|
-| `HEALTHY` | Normal operation |
-| `WATCH` | Small anomaly that needs observation |
-| `INVESTIGATE` | Material anomaly that needs review |
-| `BLOCK` | Severe condition that makes downstream data unsafe |
+```bash
+cd jev && npm install
+export AI_GATEWAY_API_KEY=...
+npm run evaluate && cd ..
+python -m src.build_final
+```
 
-The recorded decision distribution is 23 `HEALTHY`, 2 `WATCH`, 7 `INVESTIGATE`, and 8 `BLOCK`.
+Databricks: upload `data/pipeline_runs.csv` + `data/jev_decisions.json` to a Unity Catalog volume, set `CATALOG` in `notebooks/databricks_pipeline.py`, run all cells. Creates `pipeline_metrics` and `pipeline_analytics`; build the AI/BI dashboard per `docs/dashboard-spec.md` (screenshot + PDF in `docs/screenshots/`).
 
-The final join requires one valid Jev decision for every source run. The pipeline stops if coverage or label checks fail.
-
-## Databricks dashboard
-
-The verified presentation layer is a native Databricks AI/BI dashboard.
-
-It reads from the Delta table `pipeline_analytics`. The dashboard uses SQL queries from `notebooks/databricks_pipeline.py`.
-
-The dashboard contains:
-
-- four KPI cards
-- decision distribution
-- domain distribution
-- freshness delay trend
-- pipeline health table
-- investigation queue
-
-![Databricks Insurance Data Reliability Control Room](docs/screenshots/databricks-dashboard.png)
-
-[Open the PDF export](docs/screenshots/databricks-dashboard.pdf)
+Fabric: `notebooks/fabric_pipeline.py` mirrors the logic for a Lakehouse target. Not tested live.
 
 ## Technology
 
-| Area | Technology |
+| Area | Version |
 |---|---|
-| Metrics | Python 3.12, PySpark 3.5 |
-| Storage | Delta Lake 3.2 |
-| Decision layer | `typesafe-ai/jev`, Vercel AI SDK |
-| Verified cloud platform | Databricks Free Edition |
-| Dashboard | Databricks AI/BI |
-| Portability target | Microsoft Fabric Lakehouse |
-| Tests | pytest |
+| Metrics | Python 3.12, PySpark 3.5.6 |
+| Storage | Delta Lake 3.2.1 |
+| Decision layer | `typesafe-ai/jev` via Vercel AI SDK (`jev/package.json`) |
+| Dashboards | Databricks AI/BI (verified), Next.js 16 static mirror in `web/` |
+| Tests | pytest (53 cases), ruff |
 
 ## Repository map
 
 ```text
-data/
-  pipeline_runs.csv
-  jev_input.json
-  jev_decisions.json
-  final_analytics.csv
-
-src/
-  generate_data.py
-  metrics.py
-  spark_pipeline.py
-  build_final.py
-
-jev/
-  evaluate.mjs
-  package.json
-
-notebooks/
-  databricks_pipeline.py
-  fabric_pipeline.py
-
-docs/
-  dashboard-spec.md
-  screenshots/
-
-tests/
-  test_metrics.py
-  test_generation.py
-  test_decisions.py
+data/                  pipeline_runs.csv, jev_input.json,
+                       jev_decisions.json, final_analytics.csv
+src/                   generate_data.py, metrics.py,
+                       spark_pipeline.py, build_final.py
+jev/                   evaluate.mjs, package.json, dns-shim.cjs
+notebooks/             databricks_pipeline.py, fabric_pipeline.py
+web/src/               app/, components/, lib/stats.ts, data/runs.json
+tests/                 test_metrics.py, test_generation.py,
+                       test_decisions.py, test_final_logic.py
+scripts/               sync_web_data.py
+docs/                  ARCHITECTURE.md, DATA_DICTIONARY.md,
+                       dashboard-spec.md, ADR/, architecture/, screenshots/
+.github/workflows/    ci.yml (Python + web)
 ```
-
-The repository keeps the source data, measured state, Jev output, and final analytics export visible for review.
-
-## Local run
-
-Use Python 3.12, Java 17, and Node.js.
-
-1. Create a Python environment.
-
-```bash
-python -m venv .venv
-source .venv/bin/activate
-```
-
-2. Install the Python packages.
-
-```bash
-pip install -r requirements.txt
-```
-
-3. Set `JAVA_HOME` to a Java 17 installation.
-
-```bash
-export JAVA_HOME=/path/to/jdk17
-```
-
-4. Create the synthetic source data.
-
-```bash
-python -m src.generate_data
-```
-
-5. Calculate the deterministic metrics.
-
-```bash
-python -m src.spark_pipeline
-```
-
-6. Install the Jev layer dependencies.
-
-```bash
-cd jev
-npm install
-```
-
-7. Set the Vercel AI Gateway key.
-
-```bash
-export AI_GATEWAY_API_KEY=...
-```
-
-8. Run the Jev decision layer.
-
-```bash
-npm run evaluate
-cd ..
-```
-
-9. Build the final Delta table and CSV export.
-
-```bash
-python -m src.build_final
-```
-
-10. Run the test suite.
-
-```bash
-python -m pytest tests/ -q
-```
-
-The key stays in the process environment. The repository does not store it.
-
-## Databricks reproduction
-
-The Databricks notebook ran end to end in Databricks Free Edition.
-
-1. Create a Databricks Free Edition workspace.
-2. Select a catalog.
-3. Select a schema.
-4. Create a Unity Catalog volume for the project files.
-5. Upload `data/pipeline_runs.csv` to the volume.
-6. Upload `data/jev_decisions.json` to the same volume.
-7. Import `notebooks/databricks_pipeline.py`.
-8. Set `CATALOG` at the top of the notebook.
-9. If your schema or volume name differs, set the volume path.
-10. Run all notebook cells.
-11. Create the AI/BI dashboard from the final SQL queries.
-
-The notebook creates `pipeline_metrics` and `pipeline_analytics` as Delta tables.
-
-The notebook also verifies decision coverage and allowed labels before the final join.
-
-## Microsoft Fabric status
-
-The Fabric notebook mirrors the core PySpark logic and targets a Fabric Lakehouse.
-
-The notebook creates `pipeline_metrics` and `pipeline_analytics` as Delta tables. A live Fabric workspace test is not part of this project.
-
-The repository does not claim a verified Fabric deployment.
 
 ## Tests
 
-The suite contains 45 pytest cases.
-
-The tests cover metric formulas, fixed-seed data, decision coverage, allowed labels, confidence bounds, and final table consistency.
+53 cases: metric formulas, fixed-seed generation, Jev input fidelity, decision coverage, allowed labels, confidence bounds, final-table consistency, offline join-rule unit tests.
 
 ```bash
 python -m pytest tests/ -q
+ruff check src tests scripts
 ```
+
+## Docs
+
+- `docs/ARCHITECTURE.md`, `docs/DATA_DICTIONARY.md`, `docs/ADR/001-jev-separation.md`
+- `docs/dashboard-spec.md`, `docs/screenshots/`
+- `CONTRIBUTING.md`, `SECURITY.md`, `CHANGELOG.md`
 
 ## Scope limits
 
-This project uses 40 synthetic runs across two days. It does not model live event streams, backfills, alerts, or job schedules.
+- 40 synthetic runs over two days. No live streams, backfills, alerts, or schedules.
+- Offline path reuses checked-in Jev decisions. A fresh decision run needs `AI_GATEWAY_API_KEY` and may return a different distribution.
+- Dashboards are read-only. Fabric is unverified live.
 
-The Jev step needs `AI_GATEWAY_API_KEY`. The decision layer cannot run without that key.
+## License
 
-The dashboard is read-only. The Fabric path remains unverified in a live workspace.
+MIT — see `LICENSE`.

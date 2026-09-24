@@ -3,20 +3,26 @@
 import pytest
 
 from src.metrics import (
+    duration_variance,
     error_present,
     failure_rate,
     freshness_severity,
     has_schema_drift,
     metric_record,
     row_count_variance,
-    duration_variance,
 )
 
 HEALTHY_RUN = {
-    "run_id": "r1", "domain": "auto_claims", "status": "healthy",
-    "expected_rows": 1000, "actual_rows": 1000, "failed_rows": 0,
-    "duration_seconds": 90, "expected_duration_seconds": 100,
-    "freshness_delay_minutes": 10, "schema_drift": "none",
+    "run_id": "r1",
+    "domain": "auto_claims",
+    "status": "healthy",
+    "expected_rows": 1000,
+    "actual_rows": 1000,
+    "failed_rows": 0,
+    "duration_seconds": 90,
+    "expected_duration_seconds": 100,
+    "freshness_delay_minutes": 10,
+    "schema_drift": "none",
     "error_message": None,
 }
 
@@ -77,12 +83,19 @@ class TestDurationVariance:
 
 
 class TestFreshnessSeverity:
-    @pytest.mark.parametrize("minutes,expected", [
-        (0, "ON_TIME"), (15, "ON_TIME"),
-        (16, "MINOR"), (60, "MINOR"),
-        (61, "MAJOR"), (240, "MAJOR"),
-        (241, "SEVERE"), (1440, "SEVERE"),
-    ])
+    @pytest.mark.parametrize(
+        "minutes,expected",
+        [
+            (0, "ON_TIME"),
+            (15, "ON_TIME"),
+            (16, "MINOR"),
+            (60, "MINOR"),
+            (61, "MAJOR"),
+            (240, "MAJOR"),
+            (241, "SEVERE"),
+            (1440, "SEVERE"),
+        ],
+    )
     def test_thresholds(self, minutes, expected):
         assert freshness_severity(minutes) == expected
 
@@ -115,7 +128,17 @@ class TestErrorPresent:
 
 def test_metric_record_contains_all_jev_fields():
     record = metric_record(HEALTHY_RUN)
-    for field in ("run_id", "domain", "failure_rate", "row_count_variance",
-                  "duration_variance", "freshness_delay_minutes", "freshness_severity",
-                  "schema_drift", "schema_drift_present", "status", "error_present"):
+    for field in (
+        "run_id",
+        "domain",
+        "failure_rate",
+        "row_count_variance",
+        "duration_variance",
+        "freshness_delay_minutes",
+        "freshness_severity",
+        "schema_drift",
+        "schema_drift_present",
+        "status",
+        "error_present",
+    ):
         assert field in record
