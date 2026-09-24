@@ -218,15 +218,16 @@ The key stays in the process environment. The repository does not store it.
 The Databricks notebook ran end to end in Databricks Free Edition.
 
 1. Create a Databricks Free Edition workspace.
-2. Create or select a catalog and schema.
-3. Create a Unity Catalog volume for the project files.
-4. Upload `data/pipeline_runs.csv` to the volume.
-5. Upload `data/jev_decisions.json` to the same volume.
-6. Import `notebooks/databricks_pipeline.py`.
-7. Set `CATALOG` at the top of the notebook.
-8. Set the volume path if your schema or volume name differs.
-9. Run all notebook cells.
-10. Create the AI/BI dashboard from the final SQL queries.
+2. Select a catalog.
+3. Select a schema.
+4. Create a Unity Catalog volume for the project files.
+5. Upload `data/pipeline_runs.csv` to the volume.
+6. Upload `data/jev_decisions.json` to the same volume.
+7. Import `notebooks/databricks_pipeline.py`.
+8. Set `CATALOG` at the top of the notebook.
+9. If your schema or volume name differs, set the volume path.
+10. Run all notebook cells.
+11. Create the AI/BI dashboard from the final SQL queries.
 
 The notebook creates `pipeline_metrics` and `pipeline_analytics` as Delta tables.
 
