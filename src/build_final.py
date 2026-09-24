@@ -10,7 +10,7 @@ Inputs:
 
 Outputs:
     data/delta/pipeline_analytics   final Delta table
-    data/final_analytics.csv        CSV export for the local dashboard
+    data/final_analytics.csv        portable CSV export
 
 The module refuses to produce output unless every source run has exactly one
 valid Jev decision.
@@ -91,7 +91,7 @@ def main() -> None:
         final_df = join_final(metrics_df, decisions_df)
         count = write_outputs(final_df)
         print(f"final delta table: {FINAL_DELTA}")
-        print(f"dashboard csv:     {FINAL_CSV}")
+        print(f"csv export:        {FINAL_CSV}")
         print(f"final rows:        {count} (validated: one decision per run)")
     finally:
         spark.stop()
