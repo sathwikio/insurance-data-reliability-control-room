@@ -1,0 +1,43 @@
+[project]
+name = "insurance-data-reliability-control-room"
+version = "0.2.0"
+description = "Synthetic insurance pipeline reliability: deterministic PySpark metrics + bounded Jev decision layer + Delta analytics."
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+authors = [{ name = "Sathwik Golamari" }]
+dependencies = [
+  "pyspark==3.5.6",
+  "delta-spark==3.2.1",
+  "pandas>=2.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=7.4",
+  "pytest-cov>=5.0",
+  "ruff>=0.8",
+]
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.coverage.run]
+source = ["src"]
+omit = ["tests/*"]

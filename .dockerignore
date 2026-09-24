@@ -5,12 +5,15 @@ __pycache__/
 .coverage
 data/delta/
 spark-warehouse/
-derby.log
 metastore_db/
+derby.log
 node_modules/
 .next/
 out/
+web/out/
+web/.next/
 .env
 .DS_Store
 *.log
 *.egg-info/
+.git/

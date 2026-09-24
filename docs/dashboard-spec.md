@@ -1,68 +1,127 @@
-# Dashboard Specification — Insurance Data Reliability Control Room
+# Databricks AI/BI Dashboard Specification
 
-One dashboard definition, implemented identically on three surfaces:
+This document defines the verified dashboard for the Insurance Data Reliability Control Room.
 
-| Surface | Data source |
+The dashboard reads the Delta table `pipeline_analytics`. The Databricks notebook creates that table and provides the source SQL queries.
+
+## Purpose
+
+The dashboard keeps measured facts beside the Jev decision.
+
+A reviewer can inspect pipeline health, find severe runs, and compare each decision with its deterministic signals.
+
+## Source table
+
+The dashboard uses `pipeline_analytics`.
+
+The table joins one deterministic metric row with one Jev decision row on `run_id`.
+
+The join requires complete decision coverage and an allowed label for every run.
+
+## KPI cards
+
+| Card | Definition |
 |---|---|
-| Local (Streamlit, `dashboard/app.py`) | `data/final_analytics.csv` |
-| Databricks dashboard | Delta table `pipeline_analytics` (notebook: `notebooks/databricks_pipeline.py`) |
-| Microsoft Fabric / Power BI | Lakehouse Delta table `pipeline_analytics` (notebook: `notebooks/fabric_pipeline.py`) |
+| Total pipeline runs | `COUNT(*)` |
+| Healthy % | Share of rows with `jev_decision = 'HEALTHY'` |
+| Requires attention | Rows with `jev_decision IN ('WATCH', 'INVESTIGATE')` |
+| Blocked pipelines | Rows with `jev_decision = 'BLOCK'` |
 
-The two platform dashboards must stay visually comparable: same KPI cards,
-same chart titles, same table columns, same filters.
+## Visuals
 
-## KPI cards (four, one row)
-
-| Card | Definition | Visual |
+| Visual | Type | Source fields |
 |---|---|---|
-| Total pipeline runs | `COUNT(*)` | card, integer |
-| Healthy % | share of runs with `jev_decision = HEALTHY` | card, percent |
-| Requires attention | runs with `jev_decision IN (WATCH, INVESTIGATE)` | card, integer |
-| Blocked pipelines | runs with `jev_decision = BLOCK` | card, integer |
-
-## Charts
-
-| Title | Type | Fields |
-|---|---|---|
-| Decision distribution | bar | axis: `jev_decision`; value: run count |
-| Domain distribution | bar | axis: `domain`; value: run count; legend: `jev_decision` |
-| Freshness and duration trend | line | axis: `run_timestamp`; value: `freshness_delay_minutes` (toggle to `duration_variance`) |
-
-## Filters (available on every page/section)
-
-- `domain` — multi-select
-- `jev_decision` — multi-select over HEALTHY / WATCH / INVESTIGATE / BLOCK
-- `schema_drift_present` — boolean toggle ("schema drift only")
+| Decision distribution | Bar chart | `jev_decision`, run count |
+| Domain distribution | Bar chart | `domain`, `jev_decision`, run count |
+| Freshness delay trend | Line chart | `run_timestamp`, `freshness_delay_minutes` |
+| Pipeline health | Table | Metric and decision fields |
+| Investigation queue | Table | Severe-run fields and Jev confidence |
 
 ## Pipeline health table
 
-Columns, in order:
+Use these columns in this order:
 
-`run_id`, `pipeline_name`, `domain`, `run_timestamp`, `status`,
-`jev_decision`, `jev_confidence`, `failure_rate`, `row_count_variance`,
-`duration_variance`, `freshness_delay_minutes`, `freshness_severity`,
-`schema_drift`
+```text
+run_id
+pipeline_name
+domain
+run_timestamp
+status
+jev_decision
+jev_confidence
+failure_rate
+row_count_variance
+duration_variance
+freshness_delay_minutes
+freshness_severity
+schema_drift
+```
 
-Default sort: `run_timestamp` descending. Row count visible.
+Sort `run_timestamp` in descending order.
 
-## Detail view (single run)
+## Investigation queue
 
-Selected by `run_id`. Shows both layers side by side:
+Show rows with `jev_decision` equal to `INVESTIGATE` or `BLOCK`.
 
-**Deterministic metrics (left):** `pipeline_name`, `domain`,
-`run_timestamp`, `status`, `expected_rows`, `actual_rows`, `failed_rows`,
-`failure_rate`, `row_count_variance`, `duration_seconds`,
-`expected_duration_seconds`, `duration_variance`,
-`freshness_delay_minutes`, `freshness_severity`, `schema_drift`,
-`schema_drift_present`, `error_present`, `error_message`.
+Use these fields:
 
-**Jev decision (right):** `jev_decision` (prominent), `jev_confidence`
-(native probability from the model, `n/a` when absent).
+```text
+run_id
+pipeline_name
+failure_rate
+row_count_variance
+freshness_severity
+schema_drift
+error_message
+jev_decision
+jev_confidence
+```
+
+Sort `jev_confidence` in ascending order.
+
+## Filters
+
+Add filters for these fields:
+
+- `domain`
+- `jev_decision`
+- `schema_drift_present`
 
 ## Design rules
 
-- Minimal, professional, information-dense; no decoration, animations, or
-  generated text.
-- The two layers are always visually distinguishable: deterministic metrics
-  are facts, the Jev decision is a labeled decision layer.
-- No chat, agents, or RAG surfaces anywhere.
+Keep deterministic metrics and Jev decisions visually distinct.
+
+Do not add generated explanations, chat controls, or agent controls.
+
+Use the final Delta table as the dashboard source.
+
+Keep the dashboard read-only.
+
+## Recreate the dashboard
+
+1. Run `notebooks/databricks_pipeline.py`.
+2. Verify that the notebook creates `pipeline_analytics`.
+3. Open Databricks AI/BI Dashboards.
+4. Create a dashboard from `pipeline_analytics`.
+5. Add the four KPI cards.
+6. Add the decision distribution bar chart.
+7. Add the domain distribution bar chart.
+8. Add the freshness delay line chart.
+9. Add the pipeline health table.
+10. Add the investigation queue.
+11. Add the dashboard filters.
+12. Publish the dashboard.
+
+## Evidence
+
+The repository contains a screenshot and PDF export from the verified Databricks dashboard.
+
+![Databricks Insurance Data Reliability Control Room](screenshots/databricks-dashboard.png)
+
+[Open the PDF export](screenshots/databricks-dashboard.pdf)
+
+## Microsoft Fabric
+
+The Fabric notebook targets the same `pipeline_analytics` table shape.
+
+A live Fabric dashboard test is not part of this project. The Databricks dashboard remains the verified presentation layer.
