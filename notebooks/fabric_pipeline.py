@@ -171,7 +171,7 @@ display(final_df)
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## 7. Final analytics table (Power BI-ready)
+# MAGIC ## 7. Final analytics table
 
 # COMMAND ----------
 
