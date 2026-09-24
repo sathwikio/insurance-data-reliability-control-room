@@ -1,4 +1,4 @@
-# Databricks notebook source
+# Microsoft Fabric notebook source
 # Insurance Data Reliability Control Room — Microsoft Fabric (Lakehouse) notebook.
 #
 # Environment: Fabric workspace with a Lakehouse attached (any Spark 3.4+ runtime).
@@ -180,24 +180,8 @@ final_df.write.format("delta").mode("overwrite").saveAsTable(TABLE_FINAL)
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## 8. Manual steps for the Fabric / Power BI dashboard
+# MAGIC ## 8. Validation status
 # MAGIC
-# MAGIC The Lakehouse table `pipeline_analytics` is directly queryable by Power BI:
-# MAGIC
-# MAGIC 1. In the Lakehouse view, select **New Power BI report** (or open the
-# MAGIC    SQL analytics endpoint and pick the report builder).
-# MAGIC 2. Build the report exactly per `docs/dashboard-spec.md`:
-# MAGIC    - **KPI cards**: total runs, healthy %, requires attention, blocked
-# MAGIC      (all four as card visuals over `pipeline_analytics`).
-# MAGIC    - **Decision distribution**: stacked bar, `jev_decision` on axis, `run_id` count.
-# MAGIC    - **Domain distribution**: stacked bar, `domain` on axis, `jev_decision` in legend.
-# MAGIC    - **Freshness trend**: line chart, `run_timestamp` on axis,
-# MAGIC      `freshness_delay_minutes` as value.
-# MAGIC    - **Pipeline health table**: table visual with columns `run_id`,
-# MAGIC      `pipeline_name`, `domain`, `run_timestamp`, `status`, `jev_decision`,
-# MAGIC      `jev_confidence`, `failure_rate`, `row_count_variance`,
-# MAGIC      `duration_variance`, `freshness_delay_minutes`, `schema_drift`.
-# MAGIC    - **Detail view**: a second report page with a run slicer and the
-# MAGIC      deterministic metric fields plus Jev decision and confidence.
-# MAGIC 3. Add slicers for `domain` and `jev_decision` on every page.
-# MAGIC 4. Save the report as **Insurance Data Reliability Control Room**.
+# MAGIC This notebook mirrors the verified Databricks transformation path.
+# MAGIC A live Fabric workspace run is not part of this project.
+# MAGIC Treat this file as a portability target, not a verified deployment.
