@@ -4987,7 +4987,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 
         <!-- Components -->
         <g id="node-synth_runs" data-node-id="synth_runs" data-node-label="Synthetic insurance runs" tabindex="0" role="button" aria-label="Focus Synthetic insurance runs, 40 runs · 5 domains, Deterministic measurement" aria-pressed="false" data-node-kind="backend" data-node-sublabel="40 runs · 5 domains" data-node-context="Deterministic measurement">
-          <title>Synthetic insurance runs · 40 runs · 5 domains · Deterministic measurement</title>
+          <title>Synthetic insurance runs · 40 runs · 5 domains · via generate_data.py (seed 42) · Deterministic measurement</title>
           <rect x="46" y="170" width="170" height="68" rx="6" class="c-mask"/>
           <rect x="46" y="170" width="170" height="68" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(52 176) scale(0.6875)">
@@ -4995,6 +4995,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           </g>
           <text data-node-label="" data-detail-anchor="" x="131" y="202" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Synthetic insurance runs</text>
         <text data-detail="context" x="131" y="218" class="t-muted" font-size="9" text-anchor="middle">40 runs · 5 domains</text>
+        <text data-detail="fine" x="131" y="230" class="t-muted" font-size="7" text-anchor="middle">via generate_data.py · seed 42</text>
         </g>
 
         <g id="node-metrics_engine" data-node-id="metrics_engine" data-node-label="Python + PySpark" tabindex="0" role="button" aria-label="Focus Python + PySpark, metrics · deterministic, Deterministic measurement" aria-pressed="false" data-node-kind="backend" data-node-sublabel="metrics · deterministic" data-node-context="Deterministic measurement">
@@ -5008,8 +5009,8 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         <text data-detail="context" x="348" y="218" class="t-muted" font-size="8.1" text-anchor="middle">metrics · deterministic</text>
         </g>
 
-        <g id="node-metrics_table" data-node-id="metrics_table" data-node-label="pipeline_metrics" tabindex="0" role="button" aria-label="Focus pipeline_metrics, Delta table, Deterministic measurement" aria-pressed="false" data-node-kind="database" data-node-sublabel="Delta table" data-node-context="Deterministic measurement">
-          <title>pipeline_metrics · Delta table · Deterministic measurement</title>
+        <g id="node-metrics_table" data-node-id="metrics_table" data-node-label="pipeline_metrics" tabindex="0" role="button" aria-label="Focus pipeline_metrics, Delta table · local path, Deterministic measurement" aria-pressed="false" data-node-kind="database" data-node-sublabel="Delta · local path" data-node-context="Deterministic measurement">
+          <title>pipeline_metrics · Delta table · local path · Deterministic measurement</title>
           <rect x="460" y="170" width="120" height="68" rx="6" class="c-mask"/>
           <rect x="460" y="170" width="120" height="68" rx="6" class="c-database" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(466 176) scale(0.6875)">
@@ -5017,21 +5018,19 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
             <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="520" y="202" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">pipeline_metrics</text>
-        <text data-detail="context" x="520" y="218" class="t-muted" font-size="9" text-anchor="middle">Delta table</text>
+        <text data-detail="context" x="520" y="218" class="t-muted" font-size="9" text-anchor="middle">Delta · local path</text>
         </g>
 
-        <g id="node-jev_input" data-node-id="jev_input" data-node-label="jev_input measured state" tabindex="0" role="button" aria-label="Focus jev_input measured state, measured, unlabeled, Deterministic measurement" aria-pressed="false" data-node-kind="messagebus" data-node-sublabel="measured, unlabeled" data-node-context="Deterministic measurement">
-          <title>jev_input measured state · measured, unlabeled · Deterministic measurement</title>
+        <g id="node-jev_input" data-node-id="jev_input" data-node-label="jev_input measured state" tabindex="0" role="button" aria-label="Focus jev_input measured state, JSON file · measured, unlabeled, Deterministic measurement" aria-pressed="false" data-node-kind="database" data-node-sublabel="JSON file · measured, unlabeled" data-node-context="Deterministic measurement">
+          <title>jev_input measured state · JSON file · measured, unlabeled · Deterministic measurement</title>
           <rect x="632" y="170" width="170" height="68" rx="6" class="c-mask"/>
-          <rect x="632" y="170" width="170" height="68" rx="6" class="c-messagebus" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="messagebus" class="semantic-sigil s-messagebus" transform="translate(638 176) scale(0.6875)">
-            <path d="M2.5 4.5h11M2.5 8h11M2.5 11.5h11"/>
-            <circle cx="5" cy="4.5" r="1" class="sigil-fill"/>
-            <circle cx="10.5" cy="8" r="1" class="sigil-fill"/>
-            <circle cx="7" cy="11.5" r="1" class="sigil-fill"/>
+          <rect x="632" y="170" width="170" height="68" rx="6" class="c-database" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(638 176) scale(0.6875)">
+            <ellipse cx="8" cy="4" rx="5" ry="2"/>
+            <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="717" y="202" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">jev_input measured state</text>
-        <text data-detail="context" x="717" y="218" class="t-muted" font-size="9" text-anchor="middle">measured, unlabeled</text>
+        <text data-detail="context" x="717" y="218" class="t-muted" font-size="9" text-anchor="middle">JSON file · unlabeled</text>
         </g>
 
         <g id="node-jev_model" data-node-id="jev_model" data-node-label="Jev" tabindex="0" role="button" aria-label="Focus Jev, typesafe-ai/jev, AI judgment" aria-pressed="false" data-node-kind="external" data-node-sublabel="typesafe-ai/jev" data-node-context="AI judgment">
@@ -5068,9 +5067,10 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           <text data-node-label="" data-detail-anchor="" x="545" y="482" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Validated join by run_id</text>
         <text data-detail="context" x="545" y="498" class="t-muted" font-size="9" text-anchor="middle">coverage + label checks</text>
         </g>
+        <text x="545" y="530" class="t-security" font-size="8" text-anchor="middle">on failure → stop, no output</text>
 
-        <g id="node-analytics_table" data-node-id="analytics_table" data-node-label="pipeline_analytics" tabindex="0" role="button" aria-label="Focus pipeline_analytics, Delta table, Databricks verified path" aria-pressed="false" data-node-kind="database" data-node-sublabel="Delta table" data-node-context="Databricks verified path">
-          <title>pipeline_analytics · Delta table · Databricks verified path</title>
+        <g id="node-analytics_table" data-node-id="analytics_table" data-node-label="pipeline_analytics" tabindex="0" role="button" aria-label="Focus pipeline_analytics, Delta table · Unity Catalog + CSV, Databricks verified path" aria-pressed="false" data-node-kind="database" data-node-sublabel="Delta · UC table + CSV" data-node-context="Databricks verified path">
+          <title>pipeline_analytics · Delta table · Unity Catalog + CSV · Databricks verified path</title>
           <rect x="682" y="450" width="120" height="68" rx="6" class="c-mask"/>
           <rect x="682" y="450" width="120" height="68" rx="6" class="c-database" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(688 456) scale(0.6875)">
@@ -5078,7 +5078,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
             <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="742" y="482" class="t-primary" font-size="10.3" font-weight="600" text-anchor="middle">pipeline_analytics</text>
-        <text data-detail="context" x="742" y="498" class="t-muted" font-size="9" text-anchor="middle">Delta table</text>
+        <text data-detail="context" x="742" y="498" class="t-muted" font-size="8" text-anchor="middle">Delta · UC table + CSV</text>
         </g>
 
         <g id="node-databricks" data-node-id="databricks" data-node-label="Databricks AI/BI" tabindex="0" role="button" aria-label="Focus Databricks AI/BI, verified dashboard, Databricks verified path" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="verified dashboard" data-node-context="Databricks verified path">
@@ -5092,16 +5092,16 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         <text data-detail="context" x="914" y="498" class="t-muted" font-size="9" text-anchor="middle">verified dashboard</text>
         </g>
 
-        <g id="node-fabric_target" data-node-id="fabric_target" data-node-label="Microsoft Fabric" tabindex="0" role="button" aria-label="Focus Microsoft Fabric, unverified target, Architecture component" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="unverified target" data-node-tag="portability" data-node-context="Architecture component">
-          <title>Microsoft Fabric · unverified target · Architecture component · portability</title>
+        <g id="node-fabric_target" data-node-id="fabric_target" data-node-label="Microsoft Fabric" tabindex="0" role="button" aria-label="Focus Microsoft Fabric, future target · not deployed, Architecture component" aria-pressed="false" data-node-kind="cloud" data-node-sublabel="future target" data-node-tag="not deployed" data-node-context="Architecture component">
+          <title>Microsoft Fabric · future target · not deployed · Architecture component</title>
           <rect x="1026" y="450" width="120" height="68" rx="6" class="c-mask"/>
-          <rect x="1026" y="450" width="120" height="68" rx="6" class="c-cloud" stroke-width="1.5"/>
+          <rect x="1026" y="450" width="120" height="68" rx="6" class="c-cloud" stroke-width="1.5" stroke-dasharray="6 4"/>
           <g aria-hidden="true" data-semantic-sigil="cloud" class="semantic-sigil s-cloud" transform="translate(1032 456) scale(0.6875)">
             <path d="M4.3 12.5h7.3a2.4 2.4 0 0 0 .2-4.8 4 4 0 0 0-7.5-1.3A3.1 3.1 0 0 0 4.3 12.5Z"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="1086" y="482" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Microsoft Fabric</text>
-        <text data-detail="context" x="1086" y="498" class="t-muted" font-size="9" text-anchor="middle">unverified target</text>
-        <text data-detail="fine" x="1086" y="510" class="t-cloud" font-size="7" text-anchor="middle">portability</text>
+        <text data-detail="context" x="1086" y="498" class="t-muted" font-size="9" text-anchor="middle">future target</text>
+        <text data-detail="fine" x="1086" y="510" class="t-cloud" font-size="7" text-anchor="middle">not deployed</text>
         </g>
 
         <!-- Connection labels -->

@@ -4992,8 +4992,8 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         <path data-edge-from="validated_join" data-edge-to="analytics" data-edge-label="joined rows" data-edge-key="6" data-composition-points="820,271;882.5,271" d="M 820 271 L 882.5 271" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
 
         <!-- Nodes -->
-        <g id="node-source_data" data-node-id="source_data" data-node-label="Source runs" tabindex="0" role="button" aria-label="Focus Source runs, pipeline_runs.csv, 01 / Sources" aria-pressed="false" data-node-kind="database" data-node-sublabel="pipeline_runs.csv" data-node-tag="synthetic" data-node-context="01 / Sources">
-          <title>Source runs · pipeline_runs.csv · 01 / Sources · synthetic</title>
+        <g id="node-source_data" data-node-id="source_data" data-node-label="Source runs" tabindex="0" role="button" aria-label="Focus Source runs, pipeline_runs.csv via generate_data.py seed 42, 01 / Sources" aria-pressed="false" data-node-kind="database" data-node-sublabel="pipeline_runs.csv" data-node-tag="synthetic" data-node-context="01 / Sources">
+          <title>Source runs · pipeline_runs.csv (via generate_data.py, seed 42) · 01 / Sources · synthetic</title>
           <rect x="30" y="242" width="140" height="58" rx="6" class="c-mask"/>
           <rect x="30" y="242" width="140" height="58" rx="6" class="c-database" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(36 248) scale(0.6875)">
@@ -5002,11 +5002,11 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           </g>
           <text data-node-label="" data-detail-anchor="" x="100" y="263" class="t-primary" font-size="10" font-weight="600" text-anchor="middle">Source runs</text>
           <text data-detail="context" x="100" y="279" class="t-muted" font-size="7" text-anchor="middle">pipeline_runs.csv</text>
-        <text data-detail="fine" x="100" y="289" class="t-database" font-size="7" text-anchor="middle">synthetic</text>
+        <text data-detail="fine" x="100" y="289" class="t-database" font-size="7" text-anchor="middle">via generate_data.py · seed 42</text>
         </g>
 
-        <g id="node-deterministic_calc" data-node-id="deterministic_calc" data-node-label="Metric calculation" tabindex="0" role="button" aria-label="Focus Metric calculation, deterministic · src/metrics.py, 02 / Measure" aria-pressed="false" data-node-kind="backend" data-node-sublabel="deterministic · src/metrics.py" data-node-tag="company logic" data-node-context="02 / Measure">
-          <title>Metric calculation · deterministic · src/metrics.py · 02 / Measure · company logic</title>
+        <g id="node-deterministic_calc" data-node-id="deterministic_calc" data-node-label="Metric calculation" tabindex="0" role="button" aria-label="Focus Metric calculation, deterministic · src/metrics.py, 02 / Measure" aria-pressed="false" data-node-kind="backend" data-node-sublabel="deterministic · src/metrics.py" data-node-tag="pure Python · tested" data-node-context="02 / Measure">
+          <title>Metric calculation · deterministic · src/metrics.py · 02 / Measure · pure Python · tested</title>
           <rect x="237.5" y="242" width="155" height="58" rx="6" class="c-mask"/>
           <rect x="237.5" y="242" width="155" height="58" rx="6" class="c-backend" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="backend" class="semantic-sigil s-backend" transform="translate(243.5 248) scale(0.6875)">
@@ -5014,22 +5014,20 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           </g>
           <text data-node-label="" data-detail-anchor="" x="315" y="263" class="t-primary" font-size="10" font-weight="600" text-anchor="middle">Metric calculation</text>
           <text data-detail="context" x="315" y="279" class="t-muted" font-size="7" text-anchor="middle">deterministic · src/metrics.py</text>
-        <text data-detail="fine" x="315" y="289" class="t-backend" font-size="7" text-anchor="middle">company logic</text>
+        <text data-detail="fine" x="315" y="289" class="t-backend" font-size="7" text-anchor="middle">pure Python · tested</text>
         </g>
 
-        <g id="node-jev_input_state" data-node-id="jev_input_state" data-node-label="jev_input state" tabindex="0" role="button" aria-label="Focus jev_input state, measured · no labels, 02 / Measure" aria-pressed="false" data-node-kind="messagebus" data-node-sublabel="measured · no labels" data-node-tag="measured" data-node-context="02 / Measure">
-          <title>jev_input state · measured · no labels · 02 / Measure · measured</title>
+        <g id="node-jev_input_state" data-node-id="jev_input_state" data-node-label="jev_input state" tabindex="0" role="button" aria-label="Focus jev_input state, JSON file · measured, unlabeled, 02 / Measure" aria-pressed="false" data-node-kind="database" data-node-sublabel="JSON file · measured, unlabeled" data-node-tag="JSON file" data-node-context="02 / Measure">
+          <title>jev_input state · JSON file · measured, unlabeled · 02 / Measure</title>
           <rect x="240" y="128" width="150" height="58" rx="6" class="c-mask"/>
-          <rect x="240" y="128" width="150" height="58" rx="6" class="c-messagebus" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="messagebus" class="semantic-sigil s-messagebus" transform="translate(246 134) scale(0.6875)">
-            <path d="M2.5 4.5h11M2.5 8h11M2.5 11.5h11"/>
-            <circle cx="5" cy="4.5" r="1" class="sigil-fill"/>
-            <circle cx="10.5" cy="8" r="1" class="sigil-fill"/>
-            <circle cx="7" cy="11.5" r="1" class="sigil-fill"/>
+          <rect x="240" y="128" width="150" height="58" rx="6" class="c-database" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(246 134) scale(0.6875)">
+            <ellipse cx="8" cy="4" rx="5" ry="2"/>
+            <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="315" y="149" class="t-primary" font-size="10" font-weight="600" text-anchor="middle">jev_input state</text>
           <text data-detail="context" x="315" y="165" class="t-muted" font-size="7" text-anchor="middle">measured · no labels</text>
-        <text data-detail="fine" x="315" y="175" class="t-messagebus" font-size="7" text-anchor="middle">measured</text>
+        <text data-detail="fine" x="315" y="175" class="t-database" font-size="7" text-anchor="middle">JSON file</text>
         </g>
 
         <g id="node-jev_boundary" data-node-id="jev_boundary" data-node-label="Jev (external)" tabindex="0" role="button" aria-label="Focus Jev (external), typesafe-ai/jev, 03 / Decide" aria-pressed="false" data-node-kind="external" data-node-sublabel="typesafe-ai/jev" data-node-tag="external" data-node-context="03 / Decide">
@@ -5069,9 +5067,10 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
           <text data-detail="context" x="745" y="279" class="t-muted" font-size="7" text-anchor="middle">by run_id · label checks</text>
         <text data-detail="fine" x="745" y="289" class="t-security" font-size="7" text-anchor="middle">one-to-one</text>
         </g>
+        <text x="745" y="312" class="t-security" font-size="7" text-anchor="middle">on failure → stop, no output</text>
 
-        <g id="node-analytics" data-node-id="analytics" data-node-label="pipeline_analytics" tabindex="0" role="button" aria-label="Focus pipeline_analytics, Delta table, 05 / Analytics" aria-pressed="false" data-node-kind="database" data-node-sublabel="Delta table" data-node-tag="final" data-node-context="05 / Analytics">
-          <title>pipeline_analytics · Delta table · 05 / Analytics · final</title>
+        <g id="node-analytics" data-node-id="analytics" data-node-label="pipeline_analytics" tabindex="0" role="button" aria-label="Focus pipeline_analytics, Delta table + CSV export, 05 / Analytics" aria-pressed="false" data-node-kind="database" data-node-sublabel="Delta table + CSV" data-node-tag="final" data-node-context="05 / Analytics">
+          <title>pipeline_analytics · Delta table + CSV export · 05 / Analytics · final</title>
           <rect x="882.5" y="242" width="155" height="58" rx="6" class="c-mask"/>
           <rect x="882.5" y="242" width="155" height="58" rx="6" class="c-database" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="database" class="semantic-sigil s-database" transform="translate(888.5 248) scale(0.6875)">
@@ -5079,7 +5078,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
             <path d="M3 4v8c0 1.1 2.2 2 5 2s5-.9 5-2V4M3 8c0 1.1 2.2 2 5 2s5-.9 5-2"/>
           </g>
           <text data-node-label="" data-detail-anchor="" x="960" y="263" class="t-primary" font-size="10" font-weight="600" text-anchor="middle">pipeline_analytics</text>
-          <text data-detail="context" x="960" y="279" class="t-muted" font-size="7" text-anchor="middle">Delta table</text>
+          <text data-detail="context" x="960" y="279" class="t-muted" font-size="7" text-anchor="middle">Delta table + CSV</text>
         <text data-detail="fine" x="960" y="289" class="t-database" font-size="7" text-anchor="middle">final</text>
         </g>
 
