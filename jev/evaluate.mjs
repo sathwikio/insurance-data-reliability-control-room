@@ -10,6 +10,7 @@
 //
 // Run: NODE_OPTIONS="--require ./dns-shim.cjs" node evaluate.mjs
 
+import { createHash } from 'node:crypto';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -18,8 +19,10 @@ import { experimental_evaluate as evaluate } from 'ai';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const INPUT_PATH = join(HERE, '..', 'data', 'jev_input.json');
 const OUTPUT_PATH = join(HERE, '..', 'data', 'jev_decisions.json');
+const META_PATH = join(HERE, '..', 'data', 'jev_run_meta.json');
 
 const MODEL_ID = 'typesafe-ai/jev';
+const PROMPT_VERSION = 'v1';
 
 const DECISION_QUESTION = {
   type: 'choice',
@@ -36,7 +39,12 @@ const DECISION_QUESTION = {
 const ALLOWED = Object.keys(DECISION_QUESTION.criteria);
 
 async function main() {
-  const runs = JSON.parse(readFileSync(INPUT_PATH, 'utf8'));
+  const inputRaw = readFileSync(INPUT_PATH, 'utf8');
+  const runs = JSON.parse(inputRaw);
+  const inputHash = createHash('sha256').update(inputRaw).digest('hex');
+  const promptHash = createHash('sha256')
+    .update(JSON.stringify({ promptVersion: PROMPT_VERSION, question: DECISION_QUESTION }))
+    .digest('hex');
   const decisions = [];
 
   for (const run of runs) {
@@ -60,6 +68,17 @@ async function main() {
 
   writeFileSync(OUTPUT_PATH, JSON.stringify(decisions, null, 2));
   console.log(`wrote ${decisions.length} decisions to ${OUTPUT_PATH}`);
+
+  const meta = {
+    model: MODEL_ID,
+    promptVersion: PROMPT_VERSION,
+    promptHash,
+    inputHash,
+    count: decisions.length,
+    generatedAt: new Date().toISOString(),
+  };
+  writeFileSync(META_PATH, JSON.stringify(meta, null, 2) + '\n');
+  console.log(`wrote run metadata to ${META_PATH}`);
 }
 
 main().catch((error) => {

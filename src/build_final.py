@@ -48,7 +48,7 @@ def validate_decisions(metrics_df, decisions_df) -> None:
     decision_rows = decisions_df.collect()
     decision_ids = [row.run_id for row in decision_rows]
 
-    if len(decision_rows) != len(decision_ids) or set(metric_ids) != set(decision_ids):
+    if len(decision_rows) != len(set(decision_ids)) or set(metric_ids) != set(decision_ids):
         missing = metric_ids - set(decision_ids)
         extra = set(decision_ids) - metric_ids
         raise ValueError(

@@ -123,8 +123,9 @@ ruff check src tests scripts
 
 ## Scope limits
 
-- 40 synthetic runs over two days. No live streams, backfills, alerts, or schedules.
-- Offline path reuses checked-in Jev decisions. A fresh decision run needs `AI_GATEWAY_API_KEY` and may return a different distribution.
+This is a control-room prototype — batch, 40 synthetic runs over two days. No live streams, backfills, alerts, or schedules. See `docs/LIMITS.md`.
+
+- Offline path reuses checked-in Jev decisions. A fresh decision run needs `AI_GATEWAY_API_KEY` and may return a different distribution (provenance in `data/jev_run_meta.json`, quality table in `docs/JEV_EVAL.md`).
 - Dashboards are read-only. Fabric is unverified live.
 
 ## License
