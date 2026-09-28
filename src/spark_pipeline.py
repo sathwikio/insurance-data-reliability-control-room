@@ -134,6 +134,10 @@ def main() -> None:
     spark.sparkContext.setLogLevel("ERROR")
     try:
         runs_df = load_runs(spark)
+        total = runs_df.count()
+        distinct = runs_df.select("run_id").distinct().count()
+        if total != distinct:
+            raise ValueError(f"duplicate run_id in source (total={total}, distinct={distinct})")
         metrics_df = with_metrics(runs_df)
         write_delta(metrics_df)
         count = export_jev_input(metrics_df)

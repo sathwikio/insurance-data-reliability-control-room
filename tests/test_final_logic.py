@@ -27,7 +27,7 @@ def _validate(metric_ids, decision_rows):
     ALLOWED = ALLOWED_DECISIONS
 
     decision_ids = [r.run_id for r in decision_rows]
-    if len(decision_rows) != len(decision_ids) or set(metric_ids) != set(decision_ids):
+    if len(decision_rows) != len(set(decision_ids)) or set(metric_ids) != set(decision_ids):
         raise ValueError("decision coverage mismatch")
     bad = {r.decision for r in decision_rows} - set(ALLOWED)
     if bad:
@@ -62,6 +62,22 @@ def test_duplicate_run_ids_fail():
     # here duplicate + missing triggers mismatch
     with pytest.raises(ValueError, match="coverage mismatch"):
         _validate({"a", "b"}, [FakeRow("a", "HEALTHY"), FakeRow("a", "HEALTHY")])
+
+
+def test_duplicate_with_full_coverage_fails():
+    """Duplicate run_id with all runs present must still fail (41 rows, 40 ids)."""
+    metric_ids = {f"r{i}" for i in range(40)}
+    decision_rows = [FakeRow(f"r{i}", "HEALTHY") for i in range(40)] + [FakeRow("r0", "HEALTHY")]
+    with pytest.raises(ValueError, match="coverage mismatch"):
+        _validate(metric_ids, decision_rows)
+
+
+def test_build_final_uses_set_dedup_check():
+    """Guard against regression of the len(rows) != len(ids) vacuous check."""
+    from pathlib import Path
+
+    text = (Path(__file__).resolve().parent.parent / "src" / "build_final.py").read_text()
+    assert "len(set(decision_ids))" in text
 
 
 def test_fakedf_shape():
